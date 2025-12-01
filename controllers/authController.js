@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const TokenBlacklist = require("../models/TokenBlacklist");
 
 exports.register = async (req, res) => {
   try {
@@ -58,4 +59,31 @@ exports.login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
+};
+
+//Fungsi Logout Baru 
+exports.logout = async (req, res) => {
+    try {
+        const token = req.headers.authorization.split(" ")[1];
+
+        if (!token) {
+            return res.status(400).json({ message: "Token tidak ditemukan" });
+        }
+
+        const decoded = jwt.decode(token);
+
+        if (!decoded || decoded.exp) {
+            return res.status(400).json({ message: "Token tidak valid" });
+        }
+
+        //simpan token ke blacklist
+        await TokenBlacklist.create({
+            token,
+            expiresAt: new Date(decoded.exp * 1000),
+        });
+
+        res.json({ message: "Logout berhasil" });
+    } catch (err) {
+        res.status(500).json({ message: "Server error" });
+    }
 };
