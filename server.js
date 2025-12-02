@@ -2,12 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const authRoutes = require("./routes/auth");
+const jobCategoryRoutes = require("./routes/jobCategoryRoutes");
 
 dotenv.config();
 
 const app = express();
 
-// CORS FIX (yang dijamin aman untuk Postman & browser)
+// CORS FIX 
 app.use(cors({
   origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
@@ -18,8 +20,8 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
-const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
+app.use("/api/jobs", jobCategoryRoutes);
 
 // Test route
 app.get("/", (req, res) => {
