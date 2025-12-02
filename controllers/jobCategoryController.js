@@ -5,11 +5,14 @@ exports.createJob = async (req, res) => {
     try {
         const { job_name, description, category, applicant } = req.body;
 
+        const image = req.file ? req.file.path : null;
+        
         const jobCategory = await JobCategory.create({
             job_name,
             description,
             category,
             applicant,
+            image
         });
 
         res.json({ message: "Job category created successfully", jobCategory });
@@ -45,9 +48,14 @@ exports.getJobById = async (req, res) => {
 exports.updateJob = async (req, res) => {
     try {
 
+        const updates = req.body;
+        if (req.file) {
+            updates.image = req.file.path;
+        }
+
         const job = await JobCategory.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updates,
             { new: true }
         );
 

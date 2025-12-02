@@ -6,6 +6,7 @@ const jobCategorySchema = new mongoose.Schema({
     description: { type: String, required: true },
     category: { type: String, required: true },
     applicant: {type: Number, default: 0},
+    image: [{ type: String }]
 }, { timestamps: true });
 
 module.exports = mongoose.model("JobCategory", jobCategorySchema);
