@@ -4,6 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const jobCategoryRoutes = require("./routes/jobCategoryRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobCategoryRoutes);
 app.use("/uploads", express.static("uploads"));
+app.use("/api/applications", applicationRoutes);
 
 // Test route
 app.get("/", (req, res) => {
