@@ -6,12 +6,10 @@ const { verifyToken } = require("../middleware/auth");
 const { isUser } = require("../middleware/role");
 const applicationController = require("../controllers/applicationController");
 
-// ============================
-// ✅ MULTER CONFIG (UPLOAD CV)
-// ============================
+// MULTER CONFIG (UPLOAD CV)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/cv"); // folder CV
+    cb(null, "uploads/cv"); 
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -41,7 +39,7 @@ router.post(
   "/apply",
   verifyToken,              // cek login
   isUser,                   // cek role user
-  upload.single("cv"),      // upload CV
+  upload.single("cv"),      
   applicationController.applyJob
 );
 
